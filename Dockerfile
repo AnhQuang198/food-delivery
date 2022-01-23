@@ -1,23 +1,9 @@
-FROM golang:1.16.5 as builder
-# Define build env
-ENV GOOS linux
-ENV CGO_ENABLED 0
-# Add a work directory
-WORKDIR /app
-# Cache and install dependencies
-COPY go.mod go.sum ./
-RUN go mod download
-# Copy app files
-COPY . .
-# Build app
-RUN go build -o app
+FROM alpine
+RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
+RUN update-ca-certificates
 
-FROM alpine:3.14 as production
-# Add certificates
-RUN apk add --no-cache ca-certificates
-# Copy built binary from builder
-COPY --from=builder app .
-# Expose port
-EXPOSE 8088
-# Exec built binary
-CMD ./app
+WORKDIR /app/
+ADD ./app /app/
+# ADD ./zoneinfo.zip /usr/local/go/lib/time/#
+#ADD ./app /app/
+ENTRYPOINT ["./app"]
