@@ -12,7 +12,7 @@ node {
         buildNumber = "${env.BUILD_NUMBER}"
 
         stage('checkout code') {
-            echo "stage checkout"
+            echo "stage checkout testttttt"
         }
 
         stage('build') {
