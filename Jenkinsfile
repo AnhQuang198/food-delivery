@@ -10,8 +10,6 @@ node {
         dockerFile = "Dockerfile"
         imageName = "${dockerRepo}/${project}"
         buildNumber = "${env.BUILD_NUMBER}"
-        registryCredential = "DockerHubAccount"
-        mysqlConnect = """demo:admin123456@tcp(mysql:3306)/food_delivery?parseTime=true"""
 
         stage('checkout code') {
             checkout scm
@@ -23,7 +21,7 @@ node {
         }
 
         stage('push') {
-            sh "docker run -d --name ${imageName}:${env.BRANCH_NAME}-build-${buildNumber} --network my-net -e mySqlConnect=${mysqlConnect} -p 3500:8080 ${project}"
+            echo "push to dockerhub"
         }
     } catch (e) {
         currentBuild.result = "FAILED"
