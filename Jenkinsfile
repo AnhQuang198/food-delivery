@@ -17,7 +17,8 @@ node {
         }
 
         stage('build') {
-            sh "docker build -t ${imageName} -f ./Dockerfile ."
+            sh """docker build -t ${imageName}-stage-builder --target builder -f ${dockerFile} .
+                        docker build -t ${imageName}:${env.BRANCH_NAME} -f ${dockerFile} . """
         }
         stage('push') {
             sh """docker tag ${imageName}:${env.BRANCH_NAME} ${imageName}:${env.BRANCH_NAME}-build-${buildNumber}
