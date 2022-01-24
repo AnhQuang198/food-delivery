@@ -22,7 +22,7 @@ node {
         }
 
         stage('push') {
-            sh "docker run -d --name ${imageName}:${env.BRANCH_NAME}-build-${buildNumber} --network my-net -e mySqlConnect='demo:admin123456@tcp(mysql:3306)/food_delivery?parseTime=true'"
+            sh "docker run -d --name ${imageName}:${env.BRANCH_NAME}-build-${buildNumber} --network my-net -e mySqlConnect='"demo:admin123456@tcp(mysql:3306)/food_delivery?parseTime=true"'"
         }
     } catch (e) {
         currentBuild.result = "FAILED"
