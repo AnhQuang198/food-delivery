@@ -11,7 +11,7 @@ node {
         imageName = "${dockerRepo}/${project}"
         buildNumber = "${env.BUILD_NUMBER}"
         registryCredential = "DockerHubAccount"
-        mysqlConnect = "'"demo:admin123456@tcp(mysql:3306)/food_delivery?parseTime=true"'"
+        mysqlConnect = """demo:admin123456@tcp(mysql:3306)/food_delivery?parseTime=true"""
 
         stage('checkout code') {
             checkout scm
