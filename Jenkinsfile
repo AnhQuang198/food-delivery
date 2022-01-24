@@ -12,7 +12,8 @@ node {
         buildNumber = "${env.BUILD_NUMBER}"
 
         stage('checkout code') {
-            echo "stage checkout testttttt"
+            checkout scm
+            sh "git checkout ${env.BRANCH_NAME} && git reset --hard origin/${env.BRANCH_NAME}"
         }
 
         stage('build') {
@@ -21,6 +22,18 @@ node {
         stage('push') {
             echo "stage push"
         }
+        switch (env.BRANCH_NAME) {
+                    case 'develop':
+                        stage('deploy-dev') {
+                            echo "push dev-kubernetes"
+                        }
+                        break
+                    case 'master':
+                        stage('deploy-prod') {
+                            echo "push prod-kubernetes"
+                        }
+                        break
+                }
     } catch (e) {
         currentBuild.result = "FAILED"
         throw e
