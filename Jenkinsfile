@@ -22,22 +22,8 @@ node {
         }
 
         stage('push') {
-            sh "docker.withRegistry( '', registryCredential ) {
-                docker push ${imageName}:${env.BRANCH_NAME}-build-${buildNumber}
-            }"
+            sh "docker run -d --name ${imageName} --network my-net -e mySqlConnect='demo:admin123456@tcp(mysql:3306)/food_delivery?parseTime=true'"
         }
-        switch (env.BRANCH_NAME) {
-                    case 'develop':
-                        stage('deploy-dev') {
-                            echo "push dev-kubernetes"
-                        }
-                        break
-                    case 'master':
-                        stage('deploy-prod') {
-                            echo "push prod-kubernetes"
-                        }
-                        break
-                }
     } catch (e) {
         currentBuild.result = "FAILED"
         throw e
