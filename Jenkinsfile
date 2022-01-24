@@ -17,13 +17,10 @@ node {
         }
 
         stage('build') {
-            sh """docker build -t ${imageName}-stage-builder --target builder -f ${dockerFile} .
-                        docker build -t ${imageName}:${env.BRANCH_NAME} -f ${dockerFile} . """
+            sh "docker build -t ${imageName}:${env.BRANCH_NAME}-build-${buildNumber} -f ./Dockerfile ."
         }
         stage('push') {
-            sh """docker tag ${imageName}:${env.BRANCH_NAME} ${imageName}:${env.BRANCH_NAME}-build-${buildNumber}
-                  docker push ${imageName}:${env.BRANCH_NAME}-build-${buildNumber}"""
-
+            sh "docker push ${imageName}:${env.BRANCH_NAME}-build-${buildNumber}"
         }
         switch (env.BRANCH_NAME) {
                     case 'develop':
