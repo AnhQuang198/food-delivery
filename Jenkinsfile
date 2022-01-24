@@ -16,7 +16,7 @@ node {
         }
 
         stage('build') {
-            echo "stage build"
+            echo "stage build test"
         }
         stage('push') {
             echo "stage push"
