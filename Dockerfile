@@ -1,9 +1,10 @@
-FROM alpine
-RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
-RUN update-ca-certificates
+FROM golang:latest as builder
+RUN mkdir /app
+ADD . /app/
+WORKDIR /app
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o fd-service .
 
+FROM alpine:latest
 WORKDIR /app/
-ADD ./app /app/
-# ADD ./zoneinfo.zip /usr/local/go/lib/time/#
-#ADD ./app /app/
-ENTRYPOINT ["./app"]
+COPY --from=builder /app .
+CMD ["/app/fd-service"]
