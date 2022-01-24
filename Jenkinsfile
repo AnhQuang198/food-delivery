@@ -17,13 +17,13 @@ node {
         }
 
         stage('build') {
-            sh """docker build -t ${imageName} -f ./Dockerfile ."
+            sh "docker build -t ${imageName} -f ./Dockerfile ."
         }
         stage('push') {
             sh "docker tag ${imageName}:${env.BRANCH_NAME} ${imageName}:${env.BRANCH_NAME}-build-${
                                 buildNumber
                             }
-                        docker push ${imageName}:${env.BRANCH_NAME}-build-${buildNumber}"""
+                        docker push ${imageName}:${env.BRANCH_NAME}-build-${buildNumber}"
 
         }
         switch (env.BRANCH_NAME) {
