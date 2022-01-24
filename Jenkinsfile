@@ -17,10 +17,20 @@ node {
         }
 
         stage('build') {
-            echo "stage build test"
+            sh """
+                    egrep -q '^FROM .* AS builder\$' ${dockerFile} \
+                      && docker build -t ${imageName}-stage-builder --target builder -f ${dockerFile} .
+                    docker build -t ${imageName}:${env.BRANCH_NAME} -f ${dockerFile} .
+                  """
         }
         stage('push') {
-            echo "stage push"
+            sh """
+                    docker push ${imageName}:${env.BRANCH_NAME}
+                    docker tag ${imageName}:${env.BRANCH_NAME} ${imageName}:${env.BRANCH_NAME}-build-${
+                            buildNumber
+                        }
+                    docker push ${imageName}:${env.BRANCH_NAME}-build-${buildNumber}
+                  """
         }
         switch (env.BRANCH_NAME) {
                     case 'develop':
