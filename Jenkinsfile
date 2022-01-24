@@ -10,6 +10,7 @@ node {
         dockerFile = "Dockerfile"
         imageName = "${dockerRepo}/${project}"
         buildNumber = "${env.BUILD_NUMBER}"
+        registryCredential = "DockerHubAccount"
 
         stage('checkout code') {
             checkout scm
@@ -19,8 +20,11 @@ node {
         stage('build') {
             sh "docker build -t ${imageName}:${env.BRANCH_NAME}-build-${buildNumber} -f ./Dockerfile ."
         }
+
         stage('push') {
-            sh "docker push ${imageName}:${env.BRANCH_NAME}-build-${buildNumber}"
+            sh "docker.withRegistry( '', registryCredential ) {
+                docker push ${imageName}:${env.BRANCH_NAME}-build-${buildNumber}
+            }"
         }
         switch (env.BRANCH_NAME) {
                     case 'develop':
