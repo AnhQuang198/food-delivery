@@ -20,13 +20,8 @@ node {
             sh "docker build -t ${imageName} -f ./Dockerfile ."
         }
         stage('push') {
-            sh """
-                    docker push ${imageName}:${env.BRANCH_NAME}
-                    docker tag ${imageName}:${env.BRANCH_NAME} ${imageName}:${env.BRANCH_NAME}-build-${
-                            buildNumber
-                        }
-                    docker push ${imageName}:${env.BRANCH_NAME}-build-${buildNumber}
-                  """
+            sh "docker push ${imageName}:${buildNumber}"
+
         }
         switch (env.BRANCH_NAME) {
                     case 'develop':
