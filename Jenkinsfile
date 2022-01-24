@@ -5,7 +5,7 @@ node {
 
     try {
 
-        project = "fd-service"
+        project = "food-delivery"
         dockerRepo = "leequang198"
         dockerFile = "Dockerfile"
         imageName = "${dockerRepo}/${project}"
