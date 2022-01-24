@@ -23,6 +23,19 @@ node {
         stage('push') {
             echo "push to dockerhub"
         }
+
+        switch (env.BRANCH_NAME) {
+                    case 'develop':
+                        stage('deploy-dev') {
+                            echo "deploy-dev k8s"
+                        }
+                        break
+                    case 'master':
+                        stage('deploy-prod') {
+                            echo "deploy-prod k8s"
+                        }
+                        break
+                }
     } catch (e) {
         currentBuild.result = "FAILED"
         throw e
