@@ -21,7 +21,9 @@ node {
         }
 
         stage('push') {
-            echo "push to dockerhub"
+            withDockerRegistry([ credentialsId: "DockerHubAccount", url: "" ]) {
+               sh  'docker push ${imageName}:${env.BRANCH_NAME}-build-${buildNumber}'
+            }
         }
 
         switch (env.BRANCH_NAME) {
