@@ -22,9 +22,8 @@ node {
 
         stage('push') {
             docker.withRegistry('https://registry.hub.docker.com', 'DockerHubAccount') {
-                        app.push("${env.BUILD_NUMBER}")
-                        app.push("latest")
-                    }
+              sh "docker push ${imageName}:${env.BRANCH_NAME}-build-${buildNumber}"
+            }
         }
 
         switch (env.BRANCH_NAME) {
