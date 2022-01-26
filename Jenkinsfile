@@ -21,7 +21,7 @@ node {
         }
 
         stage('push') {
-            docker.withRegistry('https://hub.docker.com', 'DockerHubAccount') {
+            docker.withRegistry('https://registry.hub.docker.com', 'DockerHubAccount') {
                sh "docker push ${imageName}:${env.BRANCH_NAME}-build-${buildNumber}"
             }
         }
