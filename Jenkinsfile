@@ -21,7 +21,7 @@ node {
         }
 
         stage('push') {
-            docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+            docker.withRegistry('https://registry.hub.docker.com', 'DockerHubAccount') {
                         app.push("${env.BUILD_NUMBER}")
                         app.push("latest")
                     }
